@@ -1,0 +1,7 @@
+benchmark,iteration,exec_time_sec,workload_time_sec,throughput,gpu_utilization_percent,details
+HPCDL,1,0.002507925033569336,,3266445.3244605,,"Forward pass on batch size 8192, input dim 1024"
+HPCDL,2,0.002002716064453125,,4090445.043809524,,"Forward pass on batch size 8192, input dim 1024"
+HPCDL,3,0.0009996891021728516,,8194547.6670641545,,"Forward pass on batch size 8192, input dim 1024"
+Gaming,1,,0.05616879463195801,,1.0,Simulated gaming workload using matrix multiplications
+Gaming,2,,0.2669339179992676,,95.0,Simulated gaming workload using matrix multiplications
+Gaming,3,,0.10723733901977539,,55.0,Simulated gaming workload using matrix multiplications

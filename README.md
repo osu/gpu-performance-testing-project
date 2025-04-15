@@ -23,7 +23,13 @@ This project is designed to automatically run HPCDL and Gaming benchmarks on you
    pip install -r requirements.txt
    ```
 
-3. **Run the benchmarking script:**
+3. **(Recommended) Install PyTorch with CUDA support:**
+   If you're using an NVIDIA GPU (like the RTX 4070), install PyTorch with CUDA to run benchmarks on GPU:
+   ```bash
+   pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2 --extra-index-url https://download.pytorch.org/whl/cu118
+   ```
+
+5. **Run the benchmarking script:**
    ```bash
    python main.py
    ```

@@ -6,7 +6,7 @@ import time
 import pandas as pd
 
 # Import benchmark functions and utilities
-from benchmarks import hpc_benchmark, gaming_benchmark
+from my_benchmarks import hpc_benchmark, gaming_benchmark
 from utils import metrics, report
 
 def load_config(config_path="config.yaml"):
