@@ -6,8 +6,8 @@ import time
 import pandas as pd
 
 # Import benchmark functions and utilities
-from my_benchmarks import hpc_benchmark, gaming_benchmark
-from utils import metrics, report
+from my_benchmarks import hpc_benchmark, gaming_benchmark, stress_benchmark
+from utils import metrics, report, plotting
 
 def load_config(config_path="config.yaml"):
     with open(config_path, 'r') as f:
@@ -15,9 +15,8 @@ def load_config(config_path="config.yaml"):
     return config
 
 def verify_gpu(expected_model):
-    """Uses nvidia-smi to check GPU model."""
+    """Uses nvidia-smi to verify the GPU model."""
     try:
-        # Query GPU name using nvidia-smi
         output = subprocess.check_output(
             ["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"], encoding="utf-8"
         ).strip()
@@ -32,17 +31,15 @@ def verify_gpu(expected_model):
         sys.exit(1)
 
 def main():
-    # Load configuration
+    # Load configuration and verify GPU.
     config = load_config()
-
-    # Verify that the GPU is the expected one
     expected_gpu = config.get("gpu_model", "")
     verify_gpu(expected_gpu)
-
+    
     benchmark_results = []
-
-    # Run HPCDL benchmark if enabled
-    hpc_config = config["benchmarks"]["hpcdl"]
+    
+    # Run HPCDL benchmark
+    hpc_config = config["benchmarks"].get("hpcdl", {})
     if hpc_config.get("enabled", False):
         print("Running HPCDL benchmark...")
         for i in range(hpc_config.get("iterations", 1)):
@@ -51,11 +48,10 @@ def main():
             result["iteration"] = i + 1
             result["benchmark"] = "HPCDL"
             benchmark_results.append(result)
-            # Pause between iterations if needed
             time.sleep(2)
-
-    # Run Gaming benchmark if enabled
-    gaming_config = config["benchmarks"]["gaming"]
+            
+    # Run Gaming benchmark
+    gaming_config = config["benchmarks"].get("gaming", {})
     if gaming_config.get("enabled", False):
         print("Running Gaming benchmark...")
         for i in range(gaming_config.get("iterations", 1)):
@@ -65,10 +61,32 @@ def main():
             result["benchmark"] = "Gaming"
             benchmark_results.append(result)
             time.sleep(2)
-
+    
+    # Run Stress benchmark
+    stress_config = config["benchmarks"].get("stress", {})
+    if stress_config.get("enabled", False):
+        print("Running Stress benchmark...")
+        for i in range(stress_config.get("iterations", 1)):
+            print(f"  Stress Iteration {i + 1}")
+            result = stress_benchmark.run_stress_benchmark()
+            result["iteration"] = i + 1
+            result["benchmark"] = "Stress"
+            benchmark_results.append(result)
+            time.sleep(2)
+    
     # Generate report (CSV)
     report_file = "benchmark_report.csv"
     report.generate_report(benchmark_results, report_file)
+    
+    # Generate dynamic and static plots.
+    try:
+        data = pd.read_csv(report_file)
+        # Choose which metric to plot (for instance, 'throughput' or 'workload_time_sec')
+        plotting.plot_results_dynamic(data, metric="throughput")
+        plotting.save_static_plot(data, metric="throughput")
+    except Exception as e:
+        print("Error generating dynamic plot:", e)
+    
     print(f"Report generated: {report_file}")
 
 if __name__ == "__main__":
