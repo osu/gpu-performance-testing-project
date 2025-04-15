@@ -66,14 +66,17 @@ gpu_benchmark_project/
 ├── requirements.txt
 ├── config.yaml
 ├── main.py
-├── benchmarks/
+├── my_benchmarks/
 │   ├── __init__.py
 │   ├── hpc_benchmark.py
-│   └── gaming_benchmark.py
+│   ├── gaming_benchmark.py
+│   └── stress_benchmark.py       # New stress benchmark module
 └── utils/
     ├── __init__.py
     ├── metrics.py
-    └── report.py
+    ├── report.py
+    └── plotting.py               # New dynamic plotting module
+
 ```
 
 ## How It Works
