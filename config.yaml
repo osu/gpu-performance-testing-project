@@ -1,0 +1,10 @@
+gpu_model: "NVIDIA GeForce RTX 4070"
+benchmarks:
+  hpcdl:
+    enabled: true
+    iterations: 3
+    description: "Training a dummy neural network to benchmark GPU performance."
+  gaming:
+    enabled: true
+    iterations: 3
+    description: "Simulated gaming benchmark workload."
