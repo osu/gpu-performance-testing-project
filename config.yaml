@@ -8,3 +8,7 @@ benchmarks:
     enabled: true
     iterations: 3
     description: "Simulated gaming benchmark workload."
+  stress:
+    enabled: true
+    iterations: 1
+    description: "GPU stress test with heavy matrix multiplications."
